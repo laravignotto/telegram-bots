@@ -24,11 +24,12 @@ class Dancanize:
         the image (tuple of ints), and the max length of a line of text 
         (int), returns a base image with the given text written on it 
         '''
-        text = textwrap.fill(text, line_length)
+        text = textwrap.fill(text, line_length, replace_whitespace=False)
         # get the base image
         base = Image.open('./images/base.jpg').convert('RGBA')
         # get a font
-        fnt = ImageFont.truetype('Pillow/Tests/fonts/FreeMono.ttf', textsize)
+        # fnt = ImageFont.truetype('Pillow/Tests/fonts/FreeMono.ttf', textsize)
+        fnt = ImageFont.truetype('fonts/OpenSansEmoji.ttf', textsize, encoding='unicode')
         # get a drawing context
         d = ImageDraw.Draw(base)
         # draw text
@@ -51,20 +52,20 @@ class Dancanize:
                                     parse_mode=telegram.ParseMode.MARKDOWN)
         
         # the text can't be too long (e.g. it has to occupy a desired space)
-        if len(text) <= 17:
-            textsize = 50
-            starting_point = (160,565)
-            line_length = 17
+        if (len(text) <= 24) and (text.count('\n') <= 1):
+            textsize = 42
+            starting_point = (120,530)
+            line_length = 25
             self.createImg(text, textsize, starting_point, line_length)
             # send the image
             photo = open('./images/result.png', 'rb')
             context.bot.send_photo(chat_id=chat_id, 
                                     photo=photo,
                                     parse_mode=telegram.ParseMode.MARKDOWN)
-        elif 17 < len(text) < 70:
-            textsize = 38
-            starting_point = (120,535)
-            line_length = 24
+        elif (24 < len(text) < 95) and (text.count('\n') <= 2):
+            textsize = 36
+            starting_point = (110,510)
+            line_length = 34
             self.createImg(text, textsize, starting_point, line_length)
             # send the image
             photo = open('./images/result.png', 'rb')
