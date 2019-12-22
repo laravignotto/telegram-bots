@@ -18,22 +18,41 @@ class Dancanize:
         self.dp = dispatcher
         self.text = json.load(open("src/dancanize_texts.json"))
 
-    def createImg(self, text, textsize, starting_point, line_length):
+    def createImg(self, text, textsize):
         '''
-        Given a text (string), its font size (int), the starting point in
-        the image (tuple of ints), and the max length of a line of text 
-        (int), returns a base image with the given text written on it 
+        Given a text (string) and its font size (textsize, int),
+        returns a base image with the given text written on it 
         '''
+        # add newlines to text after line_length characters
+        line_length = 24
         text = textwrap.fill(text, line_length, replace_whitespace=False)
+
         # get the base image
         base = Image.open('./images/base.jpg').convert('RGBA')
+
         # get a font
         # fnt = ImageFont.truetype('Pillow/Tests/fonts/FreeMono.ttf', textsize)
         fnt = ImageFont.truetype('fonts/OpenSansEmoji.ttf', textsize, encoding='unicode')
+
         # get a drawing context
         d = ImageDraw.Draw(base)
-        # draw text
-        d.multiline_text(starting_point, text, (0,0,0), font=fnt, align='center')
+
+        # select a box to write on (top left and bottom right corners)
+        bounding_box = [110, 500, 630, 640]
+        x1, y1, x2, y2 = bounding_box  # for easy reading
+
+        # calculate the width and height of the text to be drawn, given font size
+        w, h = d.textsize(text, font=fnt)
+
+        # Calculate the mid points and offset by the upper left corner of the bounding box
+        x = (x2 - x1 - w)/2 + x1
+        y = (y2 - y1 - h)/2 + y1
+
+        # write the text to the image, where (x,y) is the top left corner of the text
+        d.text((x, y), text, (0,0,0), align='center', font=fnt)
+        # # FOR TESTING draw the bounding box to show that this works
+        # d.rectangle([x1, y1, x2, y2])
+        
         # save image
         base.save('images/result.png')
 
@@ -51,22 +70,8 @@ class Dancanize:
                                     text=emojize(self.text["wrong_use"], use_aliases=True),
                                     parse_mode=telegram.ParseMode.MARKDOWN)
         
-        # the text can't be too long (e.g. it has to occupy a desired space)
-        if (len(text) <= 24) and (text.count('\n') <= 1):
-            textsize = 42
-            starting_point = (120,530)
-            line_length = 25
-            self.createImg(text, textsize, starting_point, line_length)
-            # send the image
-            photo = open('./images/result.png', 'rb')
-            context.bot.send_photo(chat_id=chat_id, 
-                                    photo=photo,
-                                    parse_mode=telegram.ParseMode.MARKDOWN)
-        elif (24 < len(text) < 95) and (text.count('\n') <= 2):
-            textsize = 36
-            starting_point = (110,510)
-            line_length = 34
-            self.createImg(text, textsize, starting_point, line_length)
+        if len(text) <= 84:
+            self.createImg(text, 40)
             # send the image
             photo = open('./images/result.png', 'rb')
             context.bot.send_photo(chat_id=chat_id, 
