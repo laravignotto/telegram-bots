@@ -18,6 +18,7 @@ import textwrap
 from src.Start import Start
 from src.Help import Help
 from src.Dancanize import Dancanize
+from src.AutoRespond import AutoRespond
 
 
 class Bot:
@@ -48,6 +49,9 @@ class Bot:
 
         dancanize = Dancanize(self, dp)
         dancanize.registerToDispatcher()
+
+        autorespond = AutoRespond(self, dp)
+        autorespond.registerToDispatcher()
 
         self.enableLogging()
 

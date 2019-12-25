@@ -1,6 +1,6 @@
 from telegram.ext import Updater, InlineQueryHandler, CommandHandler, MessageHandler, Filters, RegexHandler, ConversationHandler
 import telegram
-import requests
+# import requests
 # import re
 from emoji import emojize
 import os
