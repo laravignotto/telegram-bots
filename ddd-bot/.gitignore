@@ -1,0 +1,6 @@
+persistence
+resources
+images
+requirements.txt
+
+*.pyc
