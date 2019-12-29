@@ -1,0 +1,7 @@
+{
+    "help_text" : "Come posso esserti utile?",
+    "howto_text" : "Ciao, sono AsparagorgoBot! :wave:\n\nTi darò una mano per avere informazioni riguardo alla sagra dell'asparago bianco di Gorgo, basterà darmi un comando. Per consultare la lista dei comandi vai indietro e premi su `Comandi`.",
+    "commands_text" : "/info - Naviga in un menù nel quale troverai tutte le informazioni relative alla sagra.",
+    "about_text" : "Made by @nyanra",
+    "done_text" : "Dammi un comando."
+}
