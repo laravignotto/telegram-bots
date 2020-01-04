@@ -14,7 +14,7 @@ import logging
 # bot apis
 from src.Start import Start
 from src.Help import Help
-# from src.Info import Info
+from src.Info import Info
 
 
 class Bot:
@@ -43,8 +43,8 @@ class Bot:
         help = Help(self, dp)
         help.registerToDispatcher()
 
-        # info = Info(self, dp)
-        # info.registerToDispatcher()
+        info = Info(self, dp)
+        info.registerToDispatcher()
 
         self.enableLogging()
 
