@@ -13,12 +13,14 @@ from PIL import Image
 from PIL import ImageDraw, ImageFont
 import logging
 import textwrap
+import random 
 
 # bot apis
 from src.Start import Start
 from src.Help import Help
 from src.Dancanize import Dancanize
 from src.AutoRespond import AutoRespond
+from src.DancanText import DancanText
 
 
 class Bot:
@@ -31,9 +33,10 @@ class Bot:
         '''
         Executes bot code and handles bot polling/lifecycle
         '''
+        # persistence
         my_persistence = PicklePersistence(filename='persistence')
         updater = Updater(tk, persistence=my_persistence, use_context=True)
-        # fr security purposes, everytime main will be called, the token
+        # for security purposes, everytime main will be called, the token
         # attribute will be erased from object memory
         del tk
 
@@ -52,6 +55,9 @@ class Bot:
 
         autorespond = AutoRespond(self, dp)
         autorespond.registerToDispatcher()
+
+        dancantext = DancanText(self, dp)
+        dancantext.registerToDispatcher()
 
         self.enableLogging()
 
