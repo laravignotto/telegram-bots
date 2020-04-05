@@ -22,8 +22,13 @@ class DancanText:
 
     def dancanText(self, update, context):
         chat_id = update.message.chat_id
-        size = random.randrange(8, 35)
+        size = random.randrange(8, 40)
         text = self.markov.generate_markov_text(size)
+        try:
+            fullstop_idx = text.rindex(".")
+            text = text[:fullstop_idx+1]
+        except ValueError:
+            pass
 
         context.bot.send_message(chat_id=chat_id, 
                     text=emojize(":crystal_ball: Dancan dice: :crystal_ball:\n" + text, use_aliases=True),
